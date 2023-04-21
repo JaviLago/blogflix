@@ -1,0 +1,23 @@
+#controllers:
+#    resource:
+#        path: ../src/Controller/
+#        namespace: App\Controller
+#    type: attribute
+
+#api_controllers:
+#    resource: '../src/Infrastructure/Http/Rest/Controller/'
+#    type: attribute
+#    prefix: /api
+
+api_controllers:
+    resource:
+        path: ../src/Infrastructure/ApiRest/
+        namespace: App\Infrastructure\ApiRest
+    type: attribute
+
+web_controllers:
+    resource:
+        path: ../src/Infrastructure/Http/
+        namespace: App\Infrastructure\Http
+    type: attribute
+
