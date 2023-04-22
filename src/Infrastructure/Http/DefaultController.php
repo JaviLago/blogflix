@@ -52,11 +52,6 @@ class DefaultController extends AbstractController
     {
         $postDetail = $getPostDetailsUseCase($postRepository, $userRepository, $id);
 
-        var_dump($postDetail?->getPost()?->getTitle());
-        var_dump($postDetail?->getPost()?->getTitle());
-        var_dump($postDetail?->getPost()?->getTitle());
-        var_dump($postDetail?->getAuthor()?->getName());
-        
         return $this->render('web/postDetails.html.twig', [
             'controller_name' => 'DefaultController',
             'postDetail' => $postDetail,
