@@ -75,7 +75,7 @@ Links útiles:
 
 https://apiumhub.com/es/tech-blog-barcelona/aplicando-arquitectura-hexagonal-proyecto-symfony/
 https://jnjsite.com/como-implementar-una-arquitectura-hexagonal-con-symfony-flex/
-
+https://www.juannicolas.eu/el-metodo-invoke-en-php/
 
 
 
