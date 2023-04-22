@@ -20,6 +20,9 @@ class Post
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $body = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $userId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class Post
     public function setBody(?string $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?int $userId): self
+    {
+        $this->userId = $userId;
 
         return $this;
     }

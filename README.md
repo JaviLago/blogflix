@@ -83,7 +83,6 @@ https://www.juannicolas.eu/el-metodo-invoke-en-php/
 
 
 
-
 Output instalaciones: 
 
 To enable PHP in Apache add the following to httpd.conf and restart Apache:

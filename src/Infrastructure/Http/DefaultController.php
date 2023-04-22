@@ -44,7 +44,10 @@ class DefaultController extends AbstractController
     {
         $post = $getPostDetailsUseCase($postRepository, $id);
 
-        var_dump("asdsf: " . $id);
+        //var_dump("asdsf: " . $id);
+        var_dump($post?->getTitle());
+        var_dump($post?->getBody());
+        var_dump($post?->getUserId());
         return $this->render('web/postDetails.html.twig', [
             'controller_name' => 'DefaultController',
             'post' => $post,
