@@ -100,3 +100,9 @@ The php.ini and php-fpm.ini file can be found in:
 
 To restart php after an upgrade:
   brew services restart php
+
+
+
+// NOTAS
+
+El objeto user tiene más campos como por ejemplo los de la dirección, compañía.. No se han añadido más entidades por simplificar el ejemplo.
