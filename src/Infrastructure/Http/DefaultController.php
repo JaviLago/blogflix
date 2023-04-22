@@ -1,15 +1,19 @@
 <?php
 
-#namespace App\Controller;
 namespace App\Infrastructure\Http;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use App\Infrastructure\Repository\PostRepository;
 use App\Infrastructure\Repository\UserRepository;
 use App\Application\GetPostsUseCase;
 use App\Application\GetPostDetailsUseCase;
+use App\Application\CreatePostUseCase;
+use App\Infrastructure\Http\Form\PostType;
+use App\Domain\Request\PostCreateRequest;
+
 
 class DefaultController extends AbstractController
 {
@@ -48,14 +52,53 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/posts/create', name: 'app_post_create')]
-    public function postsCreate(GetPostDetailsUseCase $getPostDetailsUseCase, PostRepository $postRepository, UserRepository $userRepository, int $id): Response
+    public function postsCreate(Request $request, CreatePostUseCase $createPostUseCase, PostRepository $postRepository): Response
     {
-        $postDetail = $getPostDetailsUseCase($postRepository, $userRepository, $id);
+        $form = $this->createForm(PostType::class);
+        $form->handleRequest($request);
 
-        return $this->render('web/postDetails.html.twig', [
+
+        if ($form->isSubmitted() and $form->isValid()) {
+
+            try {
+                $userId = 1; // Simulate user loged "id"
+                $title = $form->get('title')->getData();
+                $body = $form->get('body')->getData();
+
+                $postCreateRequest = new PostCreateRequest($title, $body, $userId);
+ 
+                $result = $createPostUseCase($postRepository, $postCreateRequest);
+
+                if ($result->getIsSuccess()){
+                    return $this->render('web/postCreateResult.html.twig', [
+                        'result' => 'Save successful',
+                    ]);
+                }
+                else{
+                    return $this->render('web/postCreateResult.html.twig', [
+                        'result' => $result->getErrorDescription(),
+                    ]);
+                }
+
+            } catch (\Exception $dataException) {
+                return $this->render('web/postCreateResult.html.twig', [
+                    'result' => "ERROR: " . $dataException->getMessage(),
+                ]);
+            }
+        }
+
+        return $this->render('web/postCreate.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+        /*
+        $postDetail = $getPostDetailsUseCase($postRepository, $userRepository, 1);
+
+        return $this->render('web/postCreate.html.twig', [
             'controller_name' => 'DefaultController',
             'postDetail' => $postDetail,
         ]);
+        */
     }
 
 

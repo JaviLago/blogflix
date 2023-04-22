@@ -30,3 +30,6 @@ services:
 
     App\Application\GetPostDetailsUseCase:
         autowire: true
+    
+    App\Application\CreatePostUseCase:
+        autowire: true
