@@ -21,20 +21,16 @@ use function PHPUnit\Framework\throwException;
  */
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, Utils $utils)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-
-        $this->encoders = [new XmlEncoder(), new JsonEncoder()];
-        $this->normalizers = [new ObjectNormalizer()];
-        $this->serializer = new Serializer($this->normalizers, $this->encoders);        
-        $this->utils = $utils;
     }
 
     public function findOneById(int $id): ?User
     {        
         try {
-            $curlResult =  $this->utils->curl("https://jsonplaceholder.typicode.com/users/".$id);
+            $utils = new Utils();
+            $curlResult =  $utils->curl("https://jsonplaceholder.typicode.com/users/".$id);
 
             $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
             $user = $serializer->deserialize($curlResult->response, User::class, 'json');

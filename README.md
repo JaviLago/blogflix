@@ -19,6 +19,12 @@ composer require --dev symfony/maker-bundle
 composer require symfony/orm-pack
 composer require annotations     ??????????'
 
+composer require --dev symfony/test-pack
+
+php bin/phpunit
+
+
+
 php bin/console doctrine:database:create
 php bin/console doctrine:schema:create
 php bin/console debug:router

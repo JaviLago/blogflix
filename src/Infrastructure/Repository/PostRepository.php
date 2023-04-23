@@ -22,14 +22,11 @@ use function PHPUnit\Framework\throwException;
  */
 class PostRepository extends ServiceEntityRepository implements PostRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, Utils $utils)
-    {
-        parent::__construct($registry, Post::class);
+    
 
-        $this->encoders = [new XmlEncoder(), new JsonEncoder()];
-        $this->normalizers = [new ObjectNormalizer()];
-        $this->serializer = new Serializer($this->normalizers, $this->encoders);        
-        $this->utils = $utils;
+    public function __construct(ManagerRegistry $registry)
+    {   
+        parent::__construct($registry, Post::class);
     }
 
     public function save(Post $entity, bool $flush = false): void
@@ -58,7 +55,8 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
     public function findOneById(int $id): ?Post
     {        
         try {
-            $curlResult =  $this->utils->curl("https://jsonplaceholder.typicode.com/posts/".$id);
+            $utils = new Utils();
+            $curlResult =  $utils->curl("https://jsonplaceholder.typicode.com/posts/".$id);
 
             $serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
             $post = $serializer->deserialize($curlResult->response, Post::class, 'json');

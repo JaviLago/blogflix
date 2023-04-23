@@ -18,9 +18,9 @@ class Utils
      * Get curl result
      *
      * @param [type] $url
-     * @return void
+     * @return Object
      */
-    public function curl( $url ){
+    public function curl( $url ): Object{
         /*  cacert.pem file */
         $curl=curl_init();
         /*
