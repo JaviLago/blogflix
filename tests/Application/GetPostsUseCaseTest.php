@@ -6,19 +6,19 @@ use App\Domain\Response\PostDetailResponse;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Domain\Entity\Post;
 use App\Domain\Entity\User;
-use App\Application\GetPostDetailsUseCase;
+use App\Application\GetPostsUseCase;
 
-class GetPostDetailsUseCaseTest extends KernelTestCase
+class GetPostsUseCaseTest extends KernelTestCase
 {   
     public function testGetPostDetailsUseCase(){
-        $getPostDetailsUseCase = self::getContainer()->get(GetPostDetailsUseCase::class);
+        $getPostsUseCase = self::getContainer()->get(GetPostsUseCase::class);
         $postRepository = $this->getPostRespository();
         $userRepository = $this->getUserRespository();
 
-        $postDetail = $getPostDetailsUseCase($postRepository, $userRepository, 1);
-
-        $this->assertInstanceOf(PostDetailResponse::class, $postDetail);
-        $this->assertEquals($postDetail->getPost()->getId(), $postRepository->findOneById($postDetail->getPost()->getId())->getId());
+        $postsList = $getPostsUseCase($postRepository, $userRepository, null);
+        
+        $this->assertNotEmpty($postsList);
+        $this->assertEquals($postsList[1]?->getPost()?->getId(), $postRepository->findOneById($postsList[1]?->getPost()?->getId())?->getId());
     }
 
     public function getPostRespository(){
