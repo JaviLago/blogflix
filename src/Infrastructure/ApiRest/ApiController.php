@@ -11,8 +11,10 @@ use App\Infrastructure\Repository\UserRepository;
 use App\Application\GetPostsUseCase;
 use App\Application\CreatePostUseCase;
 use App\Domain\Request\PostCreateRequest;
+use App\Domain\Response\PostCreateResponse;
 use OpenApi\Attributes as OA;
- 
+
+use function PHPSTORM_META\type;
 
 #[Route('/api/v1', name: 'app_api_v1')]
 class ApiController extends AbstractController
@@ -20,6 +22,53 @@ class ApiController extends AbstractController
     #[Route('/post', name: 'app_api_post', methods: ['GET'])]
     #[OA\Tag(name: 'Post')]
     #[OA\Get(summary: 'Get list of posts')]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful operation',
+        content: new OA\JsonContent(type: 'Array', example: [
+            [
+                  "post" => [
+                     "id" => 1, 
+                     "title" => "sunt aut facere repellat provident occaecati excepturi optio reprehenderit", 
+                     "body" => "quia et suscipit
+                                suscipit recusandae consequuntur expedita et cum
+                                reprehenderit molestiae ut ut quas totam
+                                nostrum rerum est autem sunt rem eveniet architecto", 
+                                            "userId" => 1 
+                                        ], 
+                                        "author" => [
+                                                "id" => 1, 
+                                                "name" => "Leanne Graham", 
+                                                "userName" => "Bret", 
+                                                "email" => "Sincere@april.biz", 
+                                                "phone" => "1-770-736-8031 x56442", 
+                                                "website" => "hildegard.org" 
+                                            ] 
+                                    ], 
+                                    [
+                           "post" => [
+                              "id" => 2, 
+                              "title" => "qui est esse", 
+                              "body" => "est rerum tempore vitae
+                                        sequi sint nihil reprehenderit dolor beatae ea dolores neque
+                                        fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis
+                                        qui aperiam non debitis possimus qui neque nisi nulla", 
+                              "userId" => 1 
+                           ], 
+                           "author" => [
+                                 "id" => 1, 
+                                 "name" => "Leanne Graham", 
+                                 "userName" => "Bret", 
+                                 "email" => "Sincere@april.biz", 
+                                 "phone" => "1-770-736-8031 x56442", 
+                                 "website" => "hildegard.org" 
+                              ] 
+                        ] 
+         ])  
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Error!')]
     public function postList(GetPostsUseCase $getPostsUseCase, PostRepository $postRepository, UserRepository $userRepository): Response
     {       
         try{
@@ -41,7 +90,6 @@ class ApiController extends AbstractController
         
     }
 
-
     #[Route('/post/create', name: 'app_api_post_create', methods: ['POST'])]
     #[OA\Tag(name: 'Post')]
     #[OA\Post(summary: 'Create a post')]
@@ -50,19 +98,33 @@ class ApiController extends AbstractController
         name: 'title',
         description: 'Post title',
         in: 'query',
+        required: true,
         schema: new OA\Schema(type: 'string')
     )]
     #[OA\Parameter(
         name: 'body',
         description: 'Post body',
         in: 'query',
+        required: true,
         schema: new OA\Schema(type: 'string')
     )]
     #[OA\Parameter(
         name: 'userId',
         description: 'Author id',
         in: 'query',
+        required: true,
         schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful operation',
+        content: new OA\JsonContent(type: PostCreateResponse::class, example: ['isSuccess' => true])  
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Error operation',
+        content: new OA\JsonContent(type: PostCreateResponse::class, example: ['isSuccess' => false, 'errorDescription' => 'Error description...'])
+        
     )]
     public function postCreate(Request $request, CreatePostUseCase $createPostUseCase, PostRepository $postRepository): Response
     {

@@ -1,8 +1,40 @@
 # blogflix
 Symfony 6 test :)
 
-First commit
 
+# NOTAS
+
+Soy consciente de que hay margen de mejora, es una primera aproximación de una POC de un par de días.
+
+A grandes rasgos implementé.
+
+- Web que muestra listado de post, detalle y permite la creación de un nuevo post.
+- Api Rest para obtener listado de post y creación de uno nuevo.
+- Le añadí una pequeña documentación con swagger (seguramente se podrá completar más las cabeceras).
+- Metí unos cuantos test unitarios para los casos de uso, comprobación de que cargan la web etc.. 
+
+Como comentarios generales que puedo hacer del código.. destacaría.
+
+- El objeto user tiene más campos como por ejemplo los de la dirección, compañía.. No se han añadido más entidades por simplificar el ejemplo.
+
+- Carga lento el listado, ya que por Post se trae su user de la API. Se podría hacer una caché interna, o traer el listado de user en una primera llamada y utilizar esos valores y de esa forma serían solo 2 llamadas a la API externa. Pero bueno, a modo de ejemplo te trae los datos. 
+
+- Repasaría a fondo todos los comentarios de las cabeceras de las clases / funciones
+
+- Respecto a la parte gráfica.. he metido lo más sencillo de bootstrap por simplificar. Aquí se podría meter cosas más elaboradas.
+Cuando trabajaba con symfony 2/3 generalmente las plantillas las hacía prácticamente en twig. Después de eso trabajé con Angular.
+Me gusta bastante Angular. Si empezase algo de 0.. quizá haria todo el backend con Symfony y a través de una API lo conectaría con 
+una web más dinámica con Angular. 
+
+- Probablemente hay margen de mejora con las novedades de symfony 6, he metido lo que me ha dado tiempo / he visto más curioso.
+Me parece bastante interesante el tema de las autoinyecciones, me recuerda un poco a .net. 
+
+- Respecto a los repositorios habría que meterle más campos de búsqueda etc.. 
+
+
+# Notas personales
+
+Estas notas son personales. De comandos que uso con frecuencia o links que encontré de utilidad etc etc.
 
 Comandos symfony 6
 Start app:
@@ -17,10 +49,14 @@ Info: https://lindevs.com/methods-to-clear-cache-using-console-command-in-symfon
 Paquetes instalados:
 composer require --dev symfony/maker-bundle
 composer require symfony/orm-pack
-composer require annotations     ??????????'
-
+composer require annotations
 composer require --dev symfony/test-pack
 
+composer require api
+composer require nelmio/api-doc-bundle
+composer require twig asset
+
+Lanzar test:
 php bin/phpunit
 
 
@@ -40,78 +76,6 @@ Enlaces a API:
 
 https://jsonplaceholder.typicode.com/posts/
 https://jsonplaceholder.typicode.com/posts/1
-
-{
-    "userId": 1,
-    "id": 1,
-    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-    "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
-},
-
 https://jsonplaceholder.typicode.com/users/
 https://jsonplaceholder.typicode.com/users/1
 
- {
-    "id": 1,
-    "name": "Leanne Graham",
-    "username": "Bret",
-    "email": "Sincere@april.biz",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough",
-      "zipcode": "92998-3874",
-      "geo": {
-        "lat": "-37.3159",
-        "lng": "81.1496"
-      }
-    },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
-    "company": {
-      "name": "Romaguera-Crona",
-      "catchPhrase": "Multi-layered client-server neural-net",
-      "bs": "harness real-time e-markets"
-    }
-},
-
-
-
-
-
-Links útiles: 
-
-https://apiumhub.com/es/tech-blog-barcelona/aplicando-arquitectura-hexagonal-proyecto-symfony/
-https://jnjsite.com/como-implementar-una-arquitectura-hexagonal-con-symfony-flex/
-https://www.juannicolas.eu/el-metodo-invoke-en-php/
-
-
-
-
-
-
-
-Output instalaciones: 
-
-To enable PHP in Apache add the following to httpd.conf and restart Apache:
-    LoadModule php_module /opt/homebrew/opt/php/lib/httpd/modules/libphp.so
-
-    <FilesMatch \.php$>
-        SetHandler application/x-httpd-php
-    </FilesMatch>
-
-Finally, check DirectoryIndex includes index.php
-    DirectoryIndex index.php index.html
-
-The php.ini and php-fpm.ini file can be found in:
-    /opt/homebrew/etc/php/8.2/
-
-To restart php after an upgrade:
-  brew services restart php
-
-
-
-// NOTAS
-
-El objeto user tiene más campos como por ejemplo los de la dirección, compañía.. No se han añadido más entidades por simplificar el ejemplo.
-Carga lento el listado, ya que por Post se trae su user de la API. Se podría hacer una caché interna, o traer el listado de user en una primera llamada y utilizar esos valores y de esa forma serían solo 2 llamadas a la API externa. 
