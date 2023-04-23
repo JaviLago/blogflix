@@ -108,3 +108,4 @@ To restart php after an upgrade:
 // NOTAS
 
 El objeto user tiene más campos como por ejemplo los de la dirección, compañía.. No se han añadido más entidades por simplificar el ejemplo.
+Carga lento el listado, ya que por Post se trae su user de la API. Se podría hacer una caché interna, o traer el listado de user en una primera llamada y utilizar esos valores y de esa forma serían solo 2 llamadas a la API externa. 

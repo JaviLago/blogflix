@@ -18,6 +18,5 @@ class GetPostsUseCase
         }
         
         return $result;
-        //return $postRepository->findAllWithFilter($filterByTitle);
     }
 }
