@@ -11,11 +11,15 @@ use App\Infrastructure\Repository\UserRepository;
 use App\Application\GetPostsUseCase;
 use App\Application\CreatePostUseCase;
 use App\Domain\Request\PostCreateRequest;
+use OpenApi\Attributes as OA;
+ 
 
-#[Route('/v1', name: 'app_api_v1')]
+#[Route('/api/v1', name: 'app_api_v1')]
 class ApiController extends AbstractController
 {
     #[Route('/post', name: 'app_api_post', methods: ['GET'])]
+    #[OA\Tag(name: 'Post')]
+    #[OA\Get(summary: 'Get list of posts')]
     public function postList(GetPostsUseCase $getPostsUseCase, PostRepository $postRepository, UserRepository $userRepository): Response
     {       
         try{
@@ -39,6 +43,27 @@ class ApiController extends AbstractController
 
 
     #[Route('/post/create', name: 'app_api_post_create', methods: ['POST'])]
+    #[OA\Tag(name: 'Post')]
+    #[OA\Post(summary: 'Create a post')]
+    #[OA\RequestBody(description: 'Post object that needs to be created', required: false)]
+    #[OA\Parameter(
+        name: 'title',
+        description: 'Post title',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'body',
+        description: 'Post body',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'userId',
+        description: 'Author id',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
     public function postCreate(Request $request, CreatePostUseCase $createPostUseCase, PostRepository $postRepository): Response
     {
         try{
