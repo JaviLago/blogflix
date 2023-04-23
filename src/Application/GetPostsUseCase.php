@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Application;
-use App\Domain\Entity\Post;
 use App\Domain\Interfaces\PostRepositoryInterface;
 
 class GetPostsUseCase

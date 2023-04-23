@@ -61,27 +61,21 @@ class DefaultController extends AbstractController
         if ($form->isSubmitted() and $form->isValid()) {
 
             try {
-                $userId = 1; // Simulate user loged "id"
+                $userId = 1; // Simulate user loged "id" :)
                 $title = $form->get('title')->getData();
                 $body = $form->get('body')->getData();
 
                 $postCreateRequest = new PostCreateRequest($title, $body, $userId);
  
                 $result = $createPostUseCase($postRepository, $postCreateRequest);
-
-                if ($result->getIsSuccess()){
-                    return $this->render('web/postCreateResult.html.twig', [
-                        'result' => 'Save successful',
-                    ]);
-                }
-                else{
-                    return $this->render('web/postCreateResult.html.twig', [
-                        'result' => $result->getErrorDescription(),
-                    ]);
-                }
-
+                
+                return $this->render('web/postCreateResult.html.twig', [
+                    'success' => $result->getIsSuccess(),
+                    'result' =>  ($result->getIsSuccess() ? 'Save successful' : $result->getErrorDescription()),
+                ]);
             } catch (\Exception $dataException) {
                 return $this->render('web/postCreateResult.html.twig', [
+                    'success' => false,
                     'result' => "ERROR: " . $dataException->getMessage(),
                 ]);
             }
@@ -90,15 +84,6 @@ class DefaultController extends AbstractController
         return $this->render('web/postCreate.html.twig', [
             'form' => $form->createView(),
         ]);
-
-        /*
-        $postDetail = $getPostDetailsUseCase($postRepository, $userRepository, 1);
-
-        return $this->render('web/postCreate.html.twig', [
-            'controller_name' => 'DefaultController',
-            'postDetail' => $postDetail,
-        ]);
-        */
     }
 
 

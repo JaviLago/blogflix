@@ -27,6 +27,8 @@ php bin/console make:migration ???
 
 
 php bin/console make:entity Posts
+php bin/console make:entity "App\Domain\Entity\User"
+
 
 Enlaces a API: 
 

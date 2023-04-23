@@ -10,9 +10,9 @@ class PostCreateRequest
     private string $body;
     private int $userId;
 
-    public function __construct(string $title, string $body, int $userId) {
-        $this->title = $title;
-        $this->body = $body;
+    public function __construct(?string $title, ?string $body, ?int $userId) {
+        $this->title = ($title != null ? $title: "");
+        $this->body = ($body != null ? $body: "");
         $this->userId = $userId;
     }
     

@@ -12,6 +12,13 @@
 
     <div class="row align-items-md-stretch">      
       <div class="col-md-12">
+
+        {% if success  %}
+          <h1><i class="bi bi-emoji-smile"></i> Saved</h1>
+        {% else %}
+          <h1><i class="bi bi-emoji-frown"></i> Error</h1>
+        {% endif %}
+
         {{ result }}        
       </div>
     </div>

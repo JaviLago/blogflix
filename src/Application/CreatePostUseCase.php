@@ -7,13 +7,13 @@ use App\Domain\Interfaces\PostRepositoryInterface;
 
 use App\Domain\Request\PostCreateRequest;
 use App\Domain\Response\PostCreateResponse;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CreatePostUseCase
 {
-    public function __invoke(PostRepositoryInterface $postRepository,  PostCreateRequest $request/*, ValidatorInterface $validator*/) : PostCreateResponse{
+    public function __invoke(PostRepositoryInterface $postRepository,  PostCreateRequest $request) : PostCreateResponse{
         
-        //return $postRepository->findAllWithFilter($filterByTitle);
         $post = new Post();
         $post->setTitle($request->getTitle());
         $post->setBody($request->getBody());
@@ -22,62 +22,56 @@ class CreatePostUseCase
         $response = new PostCreateResponse();
         try {
 
-            /*
-            $this->validate($post);
+            /**
+             * Note: We can put these "assets" on the attributes of the entities. It's just an example of validator :)
+             */
+            $validator = Validation::createValidatorBuilder()
+                ->enableAnnotationMapping() 
+                ->addMethodMapping('loadValidatorMetadata')
+                ->getValidator();
 
-            $this->postRepository->save($post);
-            */
+            
+            $constraints = new Assert\Collection([
+                'userId' => [
+                    new Assert\NotNull()
+                ],
+                'title' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 5,
+                        'max' => 100,
+                    ]),
+                ],
+                'body' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 10,
+                        'max' => 255,
+                    ]),
+                ],
+            ]);
+             
+            $errors = $validator->validate([    'userId' => $request->getUserId(),
+                                                'title' => $request->getTitle(),
+                                                'body' => $request->getBody(),
+                                            ], $constraints);
 
-            //return new CreatePostResponse($post);
+            if (count($errors) > 0) {
+                $response->setIsSuccess(false);
+                $response->setErrorDescription((string) $errors);
+                return $response;
+            }
+
+            $postRepository->save($post, true);
+            $response->setIsSuccess(true);
             return $response;
+
         } catch (\Exception $e) {
 
             $response->setIsSuccess(false);
             $response->setErrorDescription($e->getMessage());
 
-            return $response;
-            //throw new InvalidPostDataException($e->getMessage());
+            return $response;            
         }
     }
- 
-    /**
-     * @return Uuid
-     */
-    /*
-    private function generatePostId(): Uuid
-    {
-        $maxAttempts = 5;
-        $attempts = 0;
-
-        $id = $this->idGenerator->generate();
-
-        while ($attempts < $maxAttempts && !is_null($this->postRepository->findOneById($id))) {
-
-            $id = $this->idGenerator->generate();
-
-            $attempts++;
-            if ($attempts >= $maxAttempts) {
-                // throw new IdGenerationAttemptsExceeded($maxAttempts);
-            }
-        }
-
-        return $id;
-    }
-    */
-
-    /**
-     * @param Post $post
-     *
-     * @return void
-     */
-    
-    protected function validate(Post $post): void
-    {
-        /*
-        lazy()
-            ->that($post->getTitle())->notBlank()->minLength(3)
-            ->that($post->getBody())->notBlank()->minLength(10)
-            ->verifyNow();
-            */
-    }    
 }

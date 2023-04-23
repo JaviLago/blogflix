@@ -35,11 +35,16 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
 
     public function save(Post $entity, bool $flush = false): void
     {
+        /**
+         * Note: At this point it could be saved to DB using doctrine or a call to an external API... :)
+         */
+        /*
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+        */
     }
 
     public function remove(Post $entity, bool $flush = false): void
@@ -84,7 +89,12 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
                 $post = new Post();
                 // Deserialize data into "Post" object
                 $post = $serializer->deserialize(json_encode($element), Post::class, 'json');
-                $posts[] = $post;
+
+                /* NOTE: Here we could put something more elaborate... it's just an example
+                 */
+                if ($filterByTitle == null || strpos($post->getTitle(), $filterByTitle) !== false){
+                    $posts[] = $post;
+                }               
             }
            
             return $posts;
