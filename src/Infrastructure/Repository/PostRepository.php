@@ -7,11 +7,9 @@ use App\Domain\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-
-use function PHPUnit\Framework\throwException;
+use App\Infrastructure\Repository\Utils;
 
 /**
  * @extends ServiceEntityRepository<Posts>
@@ -64,14 +62,16 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
             return $post;
         } catch (\Throwable $th) {
             // TODO - insert exception log!
-            throwException($th);
+            //throwException($th);
+            return null;
         }
     }
 
     public function findAllWithFilter(?string $filterByTitle): Array{
 
         try {
-            $curlResult =  $this->utils->curl("https://jsonplaceholder.typicode.com/posts");
+            $utils = new Utils();
+            $curlResult =  $utils->curl("https://jsonplaceholder.typicode.com/posts");
 
             // Decode curl result
             $decodedResult = json_decode($curlResult->response, true);
@@ -98,7 +98,7 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
 
         } catch (\Throwable $th) {
             // TODO - insert exception log!
-            throwException($th);
+            return [];
         }
     }
 }
