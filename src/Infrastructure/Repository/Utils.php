@@ -12,12 +12,7 @@ use Symfony\Component\Serializer\Serializer;
  */
 class Utils 
 {
-    public function __construct()
-    {
-        $this->encoders = [new XmlEncoder(), new JsonEncoder()];
-        $this->normalizers = [new ObjectNormalizer()];
-        $this->serializer = new Serializer($this->normalizers, $this->encoders);
-    }
+    public function __construct(){}
 
     /**
      * Get curl result
