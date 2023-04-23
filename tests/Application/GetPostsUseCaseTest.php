@@ -2,7 +2,6 @@
 
 namespace App\Test\Application;
 
-use App\Domain\Response\PostDetailResponse;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Domain\Entity\Post;
 use App\Domain\Entity\User;
