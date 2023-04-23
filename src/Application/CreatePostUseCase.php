@@ -4,7 +4,6 @@ namespace App\Application;
 
 use App\Domain\Entity\Post;
 use App\Domain\Interfaces\PostRepositoryInterface;
-
 use App\Domain\Request\PostCreateRequest;
 use App\Domain\Response\PostCreateResponse;
 use Symfony\Component\Validator\Validation;
@@ -12,6 +11,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreatePostUseCase
 {
+    /**
+     * @param PostRepositoryInterface $postRepository
+     * @param PostCreateRequest $request
+     * @return PostCreateResponse|null
+     */
     public function __invoke(PostRepositoryInterface $postRepository,  PostCreateRequest $request) : PostCreateResponse{
         
         $post = new Post();

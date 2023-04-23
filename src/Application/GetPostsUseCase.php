@@ -7,6 +7,12 @@ use App\Domain\Response\PostDetailResponse;
 
 class GetPostsUseCase
 {
+    /**
+     * @param PostRepositoryInterface $postRepository
+     * @param UserRepositoryInterface $userRepository
+     * @param ?string $filterByTitle
+     * @return Array
+     */
     public function __invoke(PostRepositoryInterface $postRepository, UserRepositoryInterface $userRepository, ?string $filterByTitle): Array{
         // Result array
         $result = [];

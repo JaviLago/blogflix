@@ -5,12 +5,13 @@ namespace App\Infrastructure\ApiRest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use App\Infrastructure\Repository\PostRepository;
 use App\Infrastructure\Repository\UserRepository;
 use App\Application\GetPostsUseCase;
 use App\Application\CreatePostUseCase;
 use App\Domain\Request\PostCreateRequest;
-use Symfony\Component\HttpFoundation\Request;
+
 #[Route('/v1', name: 'app_api_v1')]
 class ApiController extends AbstractController
 {
