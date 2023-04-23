@@ -15,43 +15,42 @@ use App\Infrastructure\Http\Form\PostType;
 use App\Domain\Request\PostCreateRequest;
 
 
-class DefaultController extends AbstractController
+class PostsController extends AbstractController
 {
 
-    #[Route('', name: 'app_index')]
+    #[Route('', name: 'app_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->redirectToRoute('app_posts');
     }
 
-    #[Route('/error/', name: 'app_error')]
+    #[Route('/error/', name: 'app_error', methods: ['GET'])]
     public function errorPage(): Response
     {
         return $this->render('web/error.html.twig');
     }
 
-    #[Route('/posts/', name: 'app_posts')]
-    public function posts(GetPostsUseCase $getPostsUseCase, PostRepository $postRepository): Response
+    #[Route('/posts/', name: 'app_posts', methods: ['GET'])]
+    public function posts(GetPostsUseCase $getPostsUseCase, PostRepository $postRepository, UserRepository $userRepository): Response
     {        
-        $posts = $getPostsUseCase($postRepository, null);
-     
+        $posts = $getPostsUseCase($postRepository, $userRepository, null);
+        
         return $this->render('web/listPosts.html.twig', [
             'posts' => $posts,
         ]);       
     }
 
-    #[Route('/posts/{id}', name: 'app_post_details', condition: "params['id'] < 1000")]
+    #[Route('/posts/{id}', name: 'app_post_details', condition: "params['id'] < 100", methods: ['GET'])]
     public function postsDetails(GetPostDetailsUseCase $getPostDetailsUseCase, PostRepository $postRepository, UserRepository $userRepository, int $id): Response
     {
         $postDetail = $getPostDetailsUseCase($postRepository, $userRepository, $id);
         
         return $this->render('web/postDetails.html.twig', [
-            'controller_name' => 'DefaultController',
             'postDetail' => $postDetail,
         ]);
     }
 
-    #[Route('/posts/create', name: 'app_post_create')]
+    #[Route('/posts/create', name: 'app_post_create', methods: ['GET', 'POST'])]
     public function postsCreate(Request $request, CreatePostUseCase $createPostUseCase, PostRepository $postRepository): Response
     {
         $form = $this->createForm(PostType::class);

@@ -12,6 +12,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
+                <th scope="col">Author</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -19,9 +20,10 @@
 
             {% for post in posts %}
                 <tr>
-                    <th scope="row">{{ post.getId() }}</th>
-                    <td>{{ post.getTitle() }}</td>
-                    <td><a href="{{ path('app_post_details', {'id': post.id}) }}"><button class="btn btn-outline-success" type="submit">Details</button></a></td>
+                    <th scope="row">{{ post.getPost().getId()}}</th>
+                    <td>{{ post.getPost().getTitle()}}</td>
+                    <td>{{ post.getAuthor().getUsername()}}</td>
+                    <td><a href="{{ path('app_post_details', {'id': post.getPost().getId()}) }}"><button class="btn btn-outline-success" type="submit">Details</button></a></td>
                 </tr>
             {% endfor %}
         </tbody>
